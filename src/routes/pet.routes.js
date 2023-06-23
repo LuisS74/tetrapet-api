@@ -3,8 +3,8 @@ import { registerPet, updatePet, deletePet } from '../controllers/pet.controller
 
 const router = Router();
 
-router.post('/register', registerPet);
-router.put('/edit/:petId', updatePet);
-router.delete('/delete/:petId', deletePet)
+router.post('/:userId/register', registerPet);
+router.put('/:userId/edit/:petRut', updatePet);
+router.delete('/:userId/delete/:petRut', deletePet)
 
 export default router; 

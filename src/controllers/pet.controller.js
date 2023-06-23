@@ -6,7 +6,7 @@ async function registerPet(req, res){
             name: req.body.name,
             petrut: req.body.petrut,
             animal: req.body.animal,
-            race: req.body.name,
+            race: req.body.race,
             chip: req.body.chip,
             owner: req.body.owner
         });
@@ -16,4 +16,18 @@ async function registerPet(req, res){
     }
 }
 
-export {registerPet}
+function updatePet (req, res){
+    const updateId = req.param.petId;
+
+}
+
+async function deletePet (req, res){
+    try{
+        const deleteRut = req.param.petId;
+        const pet = await Mascota.deleteOne({petrut: deleteRut});
+        res.send(pet)
+    } catch (error){
+        return res.status(500).send({ error })
+    }
+}
+export {registerPet, updatePet, deletePet}

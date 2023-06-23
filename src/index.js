@@ -1,22 +1,28 @@
-import express from 'express'
+import express from 'express';
+import petRoutes from './routes/pet.routes.js'
 import userRoutes from './routes/users.routes.js'
-import connect from './configs/mongo.js'
+import cors from 'cors';
+import { port } from './configs/environment.js'
+import connectDB from './configs/mongo.js';
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
+//ruta padre de endpoints de user.routes.js
 app.use('', userRoutes);
+app.use('/pet', petRoutes);
 
-console.log('Connecting to database...');
-connect()
-  .then(() => {
-    console.log('Mongo connected successful');
-    app.listen(3000, async () => {
-      console.log(`Server is running on PORT: 3000`);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-    process.exit(-1);
-  });
+async function startServer() {
+    const isConnected = await connectDB();
+    if (isConnected) {
+        app.listen(port, () => {
+            console.log(`Server started on ${port}`);
+        });
+    } else {
+        process.exit();
+    }
+}
+
+startServer();

@@ -1,8 +1,15 @@
-import mongoose from 'mongoose';
-import environments from './environments.js';
+import mongoose from "mongoose";
+import { mongoURI }  from './environment.js'
 
-function connect() {
-  return mongoose.connect(environments.MONGO_URI);
+export default function connectDB() {
+    return mongoose
+        .connect(mongoURI)
+        .then((success) => {
+            console.log("MongoDBB connected successfully");
+            return true;
+        })
+        .catch((error) => {
+            console.log(`MongoDB not connected. Error: ${error}`);
+            return false;
+        })
 }
-
-export default connect;

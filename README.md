@@ -1,3 +1,5 @@
 Integrantes: Alfredo Avila, Luis Salazar
 
-Variable BD : MONGO_URI
+.env
+PORT = 3000
+MONGO_URI = link

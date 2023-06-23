@@ -23,8 +23,8 @@ function updatePet (req, res){
 
 async function deletePet (req, res){
     try{
-        const deleteRut = req.param.petId;
-        const pet = await Mascota.deleteOne({petrut: deleteRut});
+        const deleteRut = req.params.petId;
+        const pet = await Mascota.deleteOne({ petrut: deleteRut });
         res.send(pet)
     } catch (error){
         return res.status(500).send({ error })

@@ -2,7 +2,7 @@ import express from 'express';
 import petRoutes from './routes/pet.routes.js'
 import userRoutes from './routes/users.routes.js'
 import cors from 'cors';
-import { port } from './configs/environment.js'
+import { port } from './configs/environments.js'
 import connectDB from './configs/mongo.js';
 
 const app = express();

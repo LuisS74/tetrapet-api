@@ -16,18 +16,26 @@ async function registerPet(req, res){
     }
 }
 
-function updatePet (req, res){
-    const updateId = req.param.petId;
-
+async function updatePet (req, res){
+    try{
+        const updateRut = req.params.petId;
+        const updateInfor = req.body;
+        const pet = await Mascota.findOneAndUpdate({petrut: updateRut}, updateInfor);
+        return res.status(201).send({ response: "Datos actualizados exitosamente."})
+    } catch (error){
+        return res.status(500).send({ error })
+    }
 }
+
 
 async function deletePet (req, res){
     try{
-        const deleteRut = req.param.petId;
+        const deleteRut = req.params.petId;
         const pet = await Mascota.deleteOne({petrut: deleteRut});
         res.send(pet)
     } catch (error){
         return res.status(500).send({ error })
     }
 }
+
 export {registerPet, updatePet, deletePet}

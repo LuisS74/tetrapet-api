@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { registerPet, updatePet, deletePet } from '../controllers/pet.controller.js';
+import { authRequired } from "../middlewares.js";
 
 const router = Router();
 
-router.post('/:userId/register', registerPet);
-router.put('/:userId/edit/:petRut', updatePet);
-router.delete('/:userId/delete/:petRut', deletePet)
+router.post('/register', authRequired, registerPet);
+router.put('/edit/:petRut', authRequired, updatePet);
+router.delete('/delete/:petRut', authRequired, deletePet)
 
 export default router; 

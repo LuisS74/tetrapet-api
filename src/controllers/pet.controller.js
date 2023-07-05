@@ -3,8 +3,7 @@ import UserModel from '../models/user.model.js';
 
 async function registerPet(req, res) {
     try {
-        const userId = req.params.userId;
-        const user = await UserModel.findById(userId);
+        const user = await UserModel.findById(req.id).exec();
 
         if (!user) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
@@ -16,7 +15,7 @@ async function registerPet(req, res) {
             animal: req.body.animal,
             race: req.body.race,
             chip: req.body.chip,
-            owner: user._id
+            owner: user.id
         });
 
         return res.status(201).send({ response: registeredPet });
@@ -28,16 +27,15 @@ async function registerPet(req, res) {
 
 async function updatePet(req, res) {
     try {
-        const userId = req.params.userId;
         const updateRut = req.params.petRut;
         const updateInfo = req.body;
 
-        const user = await UserModel.findById(userId);
+        const user = await UserModel.findById(req.id).exec();
         if (!user) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        const pet = await Mascota.findOneAndUpdate({ petrut: updateRut, owner: user._id }, updateInfo);
+        const pet = await Mascota.findOneAndUpdate({ petrut: updateRut, owner: user.id }, updateInfo);
         if (!pet) {
             return res.status(404).json({ error: 'Mascota no encontrada' });
         }
@@ -50,15 +48,14 @@ async function updatePet(req, res) {
 
 async function deletePet(req, res) {
     try {
-        const userId = req.params.userId;
+        const user = await UserModel.findById(req.id).exec();
         const deleteRut = req.params.petRut;
 
-        const user = await UserModel.findById(userId);
         if (!user) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        const pet = await Mascota.findOneAndDelete({ petrut: deleteRut, owner: user._id });
+        const pet = await Mascota.findOneAndDelete({ petrut: deleteRut, owner: user.id });
         if (!pet) {
             return res.status(404).json({ error: 'Mascota no encontrada' });
         }

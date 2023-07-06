@@ -5,22 +5,23 @@ import { generateToken, verifyToken } from '../utils/jwt.utils.js';
 async function createUser(req, res) {
     try {
         const { name, email, dni, password } = req.body;
+        const role = 0;
 
         if (!name || !email || !dni || !password) {
             return res.status(400).json({ error: 'Faltan campos requeridos' });
         }
 
         if (!validarEmail(email)) {
-            return res.status(401).json({ error: 'Correo electrónico inválido' });
+            return res.status(422).json({ error: 'Correo electrónico inválido' });
         }
 
         if (!Fn.validaRut(dni)) {
-            return res.status(401).json({ error: 'Dni inválido' });
+            return res.status(422).json({ error: 'Dni inválido' });
         }
 
         const encryptedPassword = bcrypt.hashSync(password, 10);
 
-        const userCreated = await UserModel.create({ name, email, dni, password: encryptedPassword });
+        const userCreated = await UserModel.create({ name, email, dni, password: encryptedPassword, role });
 
         res.send(userCreated);
     } catch (err) {
@@ -40,9 +41,19 @@ async function login(req, res) {
         return res.status(400).send({ error: "contraseña incorrecta" });
     }
 
-    const token =  generateToken(user);
+    const token = generateToken(user);
 
-    return res.status(200).json({user, token});
+    return res.status(200).json({ user, token });
+}
+
+async function me(req, res) {
+    try {
+        const user = await UserModel.findById(req.id).exec();
+
+        return res.status(200).json({ user });
+    } catch (err) {
+        return res.status(403).json(err);
+    }
 }
 
 function validarEmail(email) {
@@ -73,4 +84,5 @@ var Fn = {
 export {
     createUser,
     login,
+    me
 }

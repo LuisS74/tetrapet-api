@@ -24,6 +24,7 @@ export function authRequired(req, res, next) {
 	}
 }
 
+
 export function hasRole(role) {
 	return async function (req, res, next) {
 		const { roles } = await UserModel.findById(req.id).exec();

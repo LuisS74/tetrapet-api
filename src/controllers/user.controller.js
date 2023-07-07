@@ -11,9 +11,19 @@ async function getUserPets(req, res) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        const userPets = await PetModel.find({ owner: user.id });
+        const userPets = await PetModel.find({ owner: user.email });
 
         return res.status(200).send(userPets);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+}
+
+async function getAllUserPets(req, res) {
+    try {
+        const allPets = await PetModel.find();
+
+        return res.status(200).send(allPets);
     } catch (err) {
         res.status(500).send(err);
     }
@@ -38,5 +48,6 @@ async function getCheckUps(req, res) {
 
 export {
     getUserPets,
+    getAllUserPets,
     getCheckUps
 };

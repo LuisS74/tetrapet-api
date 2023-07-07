@@ -16,7 +16,7 @@ async function registerPet(req, res) {
             animal: req.body.animal,
             race: req.body.race,
             chip: req.body.chip,
-            owner: user.id
+            owner: user.email
         });
 
         return res.status(201).send({ response: registeredPet });
@@ -36,7 +36,7 @@ async function updatePet(req, res) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        const pet = await Mascota.findOneAndUpdate({ petrut: updateRut, owner: user.id }, updateInfo);
+        const pet = await Mascota.findOneAndUpdate({ petrut: updateRut, owner: user.email }, updateInfo);
         if (!pet) {
             return res.status(404).json({ error: 'Mascota no encontrada' });
         }
@@ -56,7 +56,7 @@ async function deletePet(req, res) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        const pet = await Mascota.findOneAndDelete({ petrut: deleteRut, owner: user.id });
+        const pet = await Mascota.findOneAndDelete({ petrut: deleteRut, owner: user.email });
         if (!pet) {
             return res.status(404).json({ error: 'Mascota no encontrada' });
         }
